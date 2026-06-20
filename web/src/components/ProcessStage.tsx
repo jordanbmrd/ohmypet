@@ -1,3 +1,4 @@
+import { asset } from "@/lib/utils";
 import {
   motion,
   useMotionTemplate,
@@ -8,8 +9,8 @@ import {
 const ease = [0.16, 1, 0.3, 1] as const;
 
 /** Real source photo and its generated result, crossfaded by the morph. */
-const PHOTO = "/dog-photo.jpg";
-const RESULT = "/themes/royalty_portrait.png";
+const PHOTO = asset("/dog-photo.jpg");
+const RESULT = asset("/themes/royalty_portrait.png");
 
 /**
  * A hand-drawn note: a few sketched words above a wobbly arrow that

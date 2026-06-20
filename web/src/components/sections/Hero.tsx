@@ -1,3 +1,4 @@
+import { asset } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -118,7 +119,7 @@ export function Hero() {
             className="absolute left-0 top-10 w-[52%]"
           >
             <div className="animate-float [animation-delay:-2s]">
-              <PosterFrame accent="var(--color-royalty)" label="Royal" image="/themes/royalty_portrait.png" ratio="aspect-[4/5]" />
+              <PosterFrame accent="var(--color-royalty)" label="Royal" image={asset("/themes/royalty_portrait.png")} ratio="aspect-[4/5]" />
             </div>
           </motion.div>
 
@@ -133,7 +134,7 @@ export function Hero() {
                 accent="var(--color-magazine)"
                 label="Magazine"
                 caption="Couverture · Star de la mode"
-                image="/themes/magazine_cover.png"
+                image={asset("/themes/magazine_cover.png")}
                 ratio="aspect-[4/5]"
               />
             </div>
@@ -146,7 +147,7 @@ export function Hero() {
             className="absolute bottom-0 left-1/2 z-20 w-[50%] -translate-x-1/3"
           >
             <div className="animate-float [animation-delay:-4s]">
-              <PosterFrame accent="var(--color-space)" label="Cosmos" image="/themes/space_explorer.png" ratio="aspect-[4/5]" />
+              <PosterFrame accent="var(--color-space)" label="Cosmos" image={asset("/themes/space_explorer.png")} ratio="aspect-[4/5]" />
             </div>
           </motion.div>
         </div>

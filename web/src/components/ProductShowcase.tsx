@@ -1,6 +1,7 @@
+import { asset } from "@/lib/utils";
 import type { ProductKey } from "@/lib/content";
 
-const PORTRAIT = "/themes/royalty_portrait.png";
+const PORTRAIT = asset("/themes/royalty_portrait.png");
 
 function PortraitPanel({ className }: { className?: string }) {
   return (

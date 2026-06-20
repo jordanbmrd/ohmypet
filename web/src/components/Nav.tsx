@@ -1,3 +1,4 @@
+import { asset } from "@/lib/utils";
 import { MovingBorderButton } from "@/components/ui/moving-border-button";
 import { ResizableNavbar } from "@/components/ui/resizable-navbar";
 
@@ -12,7 +13,7 @@ export function Nav() {
   return (
     <ResizableNavbar>
       <a href="#top" className="flex items-center gap-2 pl-1">
-        <img src="/paw.svg" alt="" className="h-4 w-4" />
+        <img src={asset("/paw.svg")} alt="" className="h-4 w-4" />
         <span className="text-[0.95rem] font-semibold tracking-[0.04em]">
           OhMyPet
         </span>

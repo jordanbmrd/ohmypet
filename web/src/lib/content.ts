@@ -1,5 +1,7 @@
 /** Shared marketing content — kept in sync with the iOS PosterTheme catalogue. */
 
+import { asset } from "./utils";
+
 export type Theme = {
   key: string;
   title: string;
@@ -10,7 +12,7 @@ export type Theme = {
 };
 
 /** The candid source photo every example below is generated from. */
-export const originalPhoto = "/dog-photo.jpg";
+export const originalPhoto = asset("/dog-photo.jpg");
 
 export const themes: Theme[] = [
   {
@@ -19,7 +21,7 @@ export const themes: Theme[] = [
     subtitle: "Star de la mode",
     accentVar: "var(--color-magazine)",
     blurb: "Studio, lumière nette, espace de titre — la une qu'il mérite.",
-    image: "/themes/magazine_cover.png",
+    image: asset("/themes/magazine_cover.png"),
   },
   {
     key: "royalty_portrait",
@@ -27,7 +29,7 @@ export const themes: Theme[] = [
     subtitle: "Majesté à fourrure",
     accentVar: "var(--color-royalty)",
     blurb: "Huile à la Rembrandt, velours et couronne, cadre doré.",
-    image: "/themes/royalty_portrait.png",
+    image: asset("/themes/royalty_portrait.png"),
   },
   {
     key: "superhero",
@@ -35,7 +37,7 @@ export const themes: Theme[] = [
     subtitle: "Sauveur du quartier",
     accentVar: "var(--color-superhero)",
     blurb: "Cape au vent, ville au crépuscule, pose héroïque.",
-    image: "/themes/superhero.png",
+    image: asset("/themes/superhero.png"),
   },
   {
     key: "space_explorer",
@@ -43,7 +45,7 @@ export const themes: Theme[] = [
     subtitle: "Au-delà des étoiles",
     accentVar: "var(--color-space)",
     blurb: "Combinaison NASA, la Terre dans la visière, lumière cinéma.",
-    image: "/themes/space_explorer.png",
+    image: asset("/themes/space_explorer.png"),
   },
   {
     key: "chef",
@@ -51,7 +53,7 @@ export const themes: Theme[] = [
     subtitle: "Étoilé au guide",
     accentVar: "var(--color-chef)",
     blurb: "Toque blanche, cuisine étoilée, regard charmeur.",
-    image: "/themes/chef.png",
+    image: asset("/themes/chef.png"),
   },
 ];
 
@@ -112,7 +114,7 @@ export const testimonials = [
     pet: "Gustave",
     theme: "Royal",
     accent: "var(--color-royalty)",
-    image: "/themes/royalty_portrait.png",
+    image: asset("/themes/royalty_portrait.png"),
   },
   {
     quote:
@@ -122,7 +124,7 @@ export const testimonials = [
     pet: "Java",
     theme: "Magazine",
     accent: "var(--color-magazine)",
-    image: "/themes/magazine_cover.png",
+    image: asset("/themes/magazine_cover.png"),
   },
   {
     quote:
@@ -132,7 +134,7 @@ export const testimonials = [
     pet: "Nala",
     theme: "Héros",
     accent: "var(--color-superhero)",
-    image: "/themes/superhero.png",
+    image: asset("/themes/superhero.png"),
   },
 ];
 

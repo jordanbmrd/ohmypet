@@ -1,3 +1,4 @@
+import { asset } from "@/lib/utils";
 export function Footer() {
   const cols = [
     {
@@ -20,7 +21,7 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>
             <div className="flex items-center gap-2">
-              <img src="/paw.svg" alt="" className="h-4 w-4" />
+              <img src={asset("/paw.svg")} alt="" className="h-4 w-4" />
               <span className="text-[0.95rem] font-semibold tracking-[0.04em]">
                 OhMyPet
               </span>
