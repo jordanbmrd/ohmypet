@@ -10,11 +10,11 @@ import { AnimatedTooltip, type TooltipItem } from "@/components/ui/animated-tool
 const ease = [0.16, 1, 0.3, 1] as const;
 
 const proof: TooltipItem[] = [
-  { id: 1, name: "Gustave", designation: "Édition Royale", color: "var(--color-royalty)" },
-  { id: 2, name: "Java", designation: "Couverture Magazine", color: "var(--color-magazine)" },
-  { id: 3, name: "Nala", designation: "Édition Héros", color: "var(--color-superhero)" },
-  { id: 4, name: "Orion", designation: "Explorateur Spatial", color: "var(--color-space)" },
-  { id: 5, name: "Pixel", designation: "Grand Chef", color: "var(--color-chef)" },
+  { id: 1, name: "Gustave", designation: "Édition Royale", color: "var(--color-royalty)", image: asset("/dogs/alvan-nee-brFsZ7qszSY-unsplash.jpg") },
+  { id: 2, name: "Java", designation: "Couverture Magazine", color: "var(--color-magazine)", image: asset("/dogs/celine-sayuri-tagami-2s6ORaJY6gI-unsplash.jpg") },
+  { id: 3, name: "Nala", designation: "Édition Héros", color: "var(--color-superhero)", image: asset("/dogs/milli-2l0CWTpcChI-unsplash.jpg") },
+  { id: 4, name: "Orion", designation: "Explorateur Spatial", color: "var(--color-space)", image: asset("/dogs/peri-stojnic-5Vr_RVPfbMI-unsplash.jpg") },
+  { id: 5, name: "Pixel", designation: "Grand Chef", color: "var(--color-chef)", image: asset("/dogs/ryan-walton-AbNO2iejoXA-unsplash.jpg") },
 ];
 const rise = {
   hidden: { opacity: 0, y: 26 },

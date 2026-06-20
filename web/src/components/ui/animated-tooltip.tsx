@@ -15,6 +15,8 @@ export type TooltipItem = {
   color: string;
   /** Optional initials shown inside the swatch (defaults to first letter). */
   initials?: string;
+  /** Optional photo URL — renders an <img> instead of the coloured swatch. */
+  image?: string;
 };
 
 /**
@@ -65,14 +67,22 @@ export function AnimatedTooltip({ items }: { items: TooltipItem[] }) {
             )}
           </AnimatePresence>
 
-          <div
-            className="grid h-11 w-11 place-items-center rounded-full text-xs font-semibold uppercase tracking-wide text-white ring-2 ring-canvas transition-transform duration-300 group-hover:z-30 group-hover:scale-105"
-            style={{
-              background: `linear-gradient(150deg, ${item.color}, color-mix(in oklab, ${item.color} 55%, #14110d))`,
-            }}
-          >
-            {item.initials ?? item.name.charAt(0)}
-          </div>
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={item.name}
+              className="h-11 w-11 rounded-full object-cover ring-2 ring-canvas transition-transform duration-300 group-hover:z-30 group-hover:scale-105"
+            />
+          ) : (
+            <div
+              className="grid h-11 w-11 place-items-center rounded-full text-xs font-semibold uppercase tracking-wide text-white ring-2 ring-canvas transition-transform duration-300 group-hover:z-30 group-hover:scale-105"
+              style={{
+                background: `linear-gradient(150deg, ${item.color}, color-mix(in oklab, ${item.color} 55%, #14110d))`,
+              }}
+            >
+              {item.initials ?? item.name.charAt(0)}
+            </div>
+          )}
         </div>
       ))}
     </div>

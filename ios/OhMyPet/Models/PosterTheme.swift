@@ -30,6 +30,9 @@ enum PosterTheme: String, CaseIterable, Identifiable, Hashable {
         }
     }
 
+    /// Bundled example render for this theme (imageset `theme_<rawValue>`).
+    var previewAssetName: String { "theme_\(rawValue)" }
+
     /// SF Symbol used as a stand-in until theme artwork is added.
     var symbol: String {
         switch self {

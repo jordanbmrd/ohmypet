@@ -4,12 +4,14 @@ import SwiftUI
 struct OhMyPetApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var router = AppRouter()
+    @StateObject private var cart = CartStore()
 
     var body: some Scene {
         WindowGroup {
             RootView()
                 .environmentObject(appState)
                 .environmentObject(router)
+                .environmentObject(cart)
                 .tint(.ink)
         }
     }

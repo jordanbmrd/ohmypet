@@ -167,6 +167,10 @@ struct HomeFlowView: View {
             )
         case let .result(job, theme):
             ResultPreviewView(job: job, theme: theme)
+        case let .productDetail(category, imageURL, themeTitle):
+            ProductDetailView(category: category, imageURL: imageURL, themeTitle: themeTitle)
+        case .cart:
+            CartView()
         }
     }
 }

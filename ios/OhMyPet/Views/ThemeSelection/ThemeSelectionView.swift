@@ -72,14 +72,12 @@ struct ThemeRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: Sp.md) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: Rd.sm, style: .continuous)
-                        .fill(theme.accent.opacity(0.12))
-                    Image(systemName: theme.symbol)
-                        .font(.system(size: 20, weight: .regular))
-                        .foregroundStyle(theme.accent)
-                }
-                .frame(width: 52, height: 52)
+                Image(theme.previewAssetName)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 56, height: 56)
+                    .clipShape(RoundedRectangle(cornerRadius: Rd.sm, style: .continuous))
+                    .hairlineBorder(Rd.sm)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(theme.title)

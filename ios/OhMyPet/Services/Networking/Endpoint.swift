@@ -32,7 +32,7 @@ enum Endpoint {
         if body != nil {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
-        request.timeoutInterval = 70 // generation is synchronous (~15-25s)
+        request.timeoutInterval = 30 // each call is fast; generation is polled via /status
         return request
     }
 }

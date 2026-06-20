@@ -12,7 +12,8 @@ struct OnboardingView: View {
         .init(index: "02",
               symbol: "sparkles",
               title: "Des thèmes\nsignés",
-              subtitle: "Couverture de magazine, portrait royal, superhéros — un style pour chaque caractère."),
+              subtitle: "Couverture de magazine, portrait royal, superhéros — un style pour chaque caractère.",
+              previewAsset: "theme_royalty_portrait"),
         .init(index: "03",
               symbol: "shippingbox",
               title: "Livré chez vous,\nencadré",
@@ -84,6 +85,7 @@ struct OnboardingPage {
     let symbol: String
     let title: String
     let subtitle: String
+    var previewAsset: String? = nil
 }
 
 struct OnboardingPageView: View {
@@ -93,16 +95,27 @@ struct OnboardingPageView: View {
         VStack(alignment: .leading, spacing: Sp.xl) {
             Spacer()
 
-            ZStack {
-                RoundedRectangle(cornerRadius: Rd.xl, style: .continuous)
-                    .fill(Color.surface)
-                    .hairlineBorder(Rd.xl)
-                    .frame(width: 96, height: 96)
-                Image(systemName: page.symbol)
-                    .font(.system(size: 40, weight: .light))
-                    .foregroundStyle(Color.ink)
+            Group {
+                if let previewAsset = page.previewAsset {
+                    Image(previewAsset)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 132, height: 132)
+                        .clipShape(RoundedRectangle(cornerRadius: Rd.xl, style: .continuous))
+                        .hairlineBorder(Rd.xl)
+                } else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: Rd.xl, style: .continuous)
+                            .fill(Color.surface)
+                            .hairlineBorder(Rd.xl)
+                            .frame(width: 96, height: 96)
+                        Image(systemName: page.symbol)
+                            .font(.system(size: 40, weight: .light))
+                            .foregroundStyle(Color.ink)
+                    }
+                }
             }
-            .shadow(color: .ink.opacity(0.05), radius: 16, y: 8)
+            .shadow(color: .ink.opacity(0.08), radius: 16, y: 8)
 
             VStack(alignment: .leading, spacing: Sp.md) {
                 Text(page.index)

@@ -46,7 +46,7 @@ function Annotation({
   return (
     <motion.div
       aria-hidden
-      className={`pointer-events-none absolute z-10 ${className}`}
+      className={`pointer-events-none absolute z-10 hidden sm:block ${className}`}
       initial={false}
       animate={{ opacity: show ? 1 : 0, y: show ? 0 : 6 }}
       transition={{ duration: 0.45, ease }}
@@ -188,7 +188,7 @@ export function ProcessStage({
 
       {/* Outer frame (oak) */}
       <motion.div
-        className="relative w-[68%] max-w-[340px] rounded-[10px]"
+        className="relative w-[72%] max-w-[280px] rounded-[10px] sm:w-[68%] sm:max-w-[340px]"
         style={{
           padding: framePad,
           rotate,
