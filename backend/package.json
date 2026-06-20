@@ -1,0 +1,29 @@
+{
+  "name": "ohmypet-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "OhMyPet serverless backend — AI pet poster generation",
+  "scripts": {
+    "build": "rimraf dist && esbuild src/functions/generate/handler.ts src/functions/status/handler.ts src/functions/worker/handler.ts --bundle --platform=node --target=node20 --format=cjs --outdir=dist/functions --outbase=src/functions --external:@aws-sdk/*",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "deploy": "npm run build && sam build && sam deploy"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.658.0",
+    "@aws-sdk/client-lambda": "^3.1073.0",
+    "@aws-sdk/client-s3": "^3.658.0",
+    "@aws-sdk/client-secrets-manager": "^3.1073.0",
+    "@aws-sdk/lib-dynamodb": "^3.658.0",
+    "@aws-sdk/s3-request-presigner": "^3.658.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.145",
+    "@types/node": "^20.14.0",
+    "esbuild": "^0.23.1",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}

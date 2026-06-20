@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Xcode / iOS
+ios/*.xcodeproj
+ios/*.xcworkspace
+ios/DerivedData/
+ios/build/
+*.xcuserstate
+xcuserdata/
+ios/OhMyPet/**/Secrets.plist
+
+# Node / Backend
+backend/node_modules/
+backend/dist/
+backend/.aws-sam/
+backend/samconfig.toml
+*.log
+
+# Node / Web
+web/node_modules/
+web/dist/
+web/*.tsbuildinfo
+node_modules/
+
+# Env
+.env
+.env.*
+!.env.example

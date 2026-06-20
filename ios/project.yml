@@ -1,0 +1,46 @@
+name: OhMyPet
+options:
+  bundleIdPrefix: com.ohmypet
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+packages:
+  Kingfisher:
+    url: https://github.com/onevcat/Kingfisher
+    from: 7.0.0
+
+settings:
+  base:
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.10"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  OhMyPet:
+    type: application
+    platform: iOS
+    sources:
+      - path: OhMyPet
+    resources:
+      - path: OhMyPet/Resources
+    dependencies:
+      - package: Kingfisher
+    info:
+      path: OhMyPet/Config/Info.plist
+      properties:
+        CFBundleDisplayName: OhMyPet
+        UILaunchScreen:
+          UIColorName: PawLight
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSPhotoLibraryUsageDescription: OhMyPet a besoin d'accéder à tes photos pour créer le poster de ton animal.
+        NSPhotoLibraryAddUsageDescription: OhMyPet enregistre les posters générés dans ta photothèque.
+        NSCameraUsageDescription: OhMyPet utilise l'appareil photo pour prendre une photo de ton animal.
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ohmypet.app
+        TARGETED_DEVICE_FAMILY: "1"
