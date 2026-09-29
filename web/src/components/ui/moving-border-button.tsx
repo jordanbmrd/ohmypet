@@ -89,8 +89,19 @@ const MovingBorder = ({
   const pathRef = React.useRef<SVGRectElement>(null);
   const progress = useMotionValue<number>(0);
 
+  // SVG geometry calls throw while the button is display:none (e.g. the nav
+  // CTA on mobile); an exception here would stall framer-motion's frame loop
+  // and freeze every other animation on the page.
+  const safe = <T,>(fn: () => T | undefined, fallback: T): T => {
+    try {
+      return fn() ?? fallback;
+    } catch {
+      return fallback;
+    }
+  };
+
   useAnimationFrame((time) => {
-    const length = pathRef.current?.getTotalLength();
+    const length = safe(() => pathRef.current?.getTotalLength(), 0);
     if (length) {
       const pxPerMs = length / duration;
       progress.set((time * pxPerMs) % length);
@@ -99,11 +110,11 @@ const MovingBorder = ({
 
   const x = useTransform(
     progress,
-    (val) => pathRef.current?.getPointAtLength(val).x ?? 0,
+    (val) => safe(() => pathRef.current?.getPointAtLength(val).x, 0),
   );
   const y = useTransform(
     progress,
-    (val) => pathRef.current?.getPointAtLength(val).y ?? 0,
+    (val) => safe(() => pathRef.current?.getPointAtLength(val).y, 0),
   );
 
   const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;

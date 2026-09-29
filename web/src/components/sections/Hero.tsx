@@ -1,7 +1,8 @@
+import { Link, useNavigate } from "react-router-dom";
 import { asset } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { MovingBorderButton } from "@/components/ui/moving-border-button";
 import { PosterFrame } from "@/components/PosterFrame";
 import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
@@ -26,6 +27,8 @@ const rise = {
 };
 
 export function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section id="top" className="relative overflow-hidden px-6 pt-32 lg:px-10 lg:pt-40">
       {/* soft champagne aura */}
@@ -78,15 +81,16 @@ export function Hero() {
             animate="show"
             className="mt-9 flex flex-wrap items-center gap-4"
           >
-            <MovingBorderButton className="group">
+            <MovingBorderButton className="group" onClick={() => navigate("/creer")}>
               Créer mon portrait
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </MovingBorderButton>
-            <a href="#themes">
-              <Button size="lg" variant="outline">
-                Voir les thèmes
-              </Button>
-            </a>
+            <Link
+              to={{ hash: "#themes" }}
+              className={buttonVariants({ size: "lg", variant: "outline" })}
+            >
+              Voir les thèmes
+            </Link>
           </motion.div>
 
           <motion.div

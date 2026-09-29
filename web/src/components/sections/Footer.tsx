@@ -1,17 +1,32 @@
+import { Link } from "react-router-dom";
 import { asset } from "@/lib/utils";
 export function Footer() {
   const cols = [
     {
       title: "Atelier",
-      links: ["Thèmes", "Comment ça marche", "Tirages", "Tarifs"],
+      links: [
+        { label: "Créer un portrait", to: "/creer" },
+        { label: "Thèmes", to: "/#themes" },
+        { label: "Comment ça marche", to: "/#process" },
+        { label: "Tirages & tarifs", to: "/#tirages" },
+      ],
     },
     {
-      title: "Maison",
-      links: ["À propos", "Journal", "Presse", "Contact"],
+      title: "Aide",
+      links: [
+        { label: "FAQ", to: "/#faq" },
+        { label: "Mon panier", to: "/panier" },
+        { label: "Livraison", to: "/cgv#livraison" },
+        { label: "Retours", to: "/cgv#retractation" },
+      ],
     },
     {
       title: "Légal",
-      links: ["Confidentialité", "Conditions", "Cookies"],
+      links: [
+        { label: "Conditions de vente", to: "/cgv" },
+        { label: "Mentions légales", to: "/mentions-legales" },
+        { label: "Confidentialité", to: "/confidentialite" },
+      ],
     },
   ];
 
@@ -37,13 +52,13 @@ export function Footer() {
               <h4 className="eyebrow mb-5">{c.title}</h4>
               <ul className="space-y-3">
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a
-                      href="#"
+                  <li key={l.label}>
+                    <Link
+                      to={l.to}
                       className="text-sm text-ink-soft transition-colors hover:text-ink"
                     >
-                      {l}
-                    </a>
+                      {l.label}
+                    </Link>
                   </li>
                 ))}
               </ul>

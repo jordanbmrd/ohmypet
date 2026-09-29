@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { products, type ProductKey } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
 import { FocusCard } from "@/components/ui/focus-cards";
@@ -67,13 +68,13 @@ export function Products() {
                       </div>
                       <p className="mt-1.5 text-sm text-ink-soft">{p.detail}</p>
 
-                      <button
-                        type="button"
+                      <Link
+                        to={`/creer?produit=${p.key}`}
                         className="mt-6 inline-flex items-center gap-2 self-start text-sm font-medium text-ink transition-colors duration-300 group-hover:text-accent"
                       >
                         {ctaByKey[p.key]}
                         <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                      </button>
+                      </Link>
                     </div>
                   </article>
                 </FocusCard>

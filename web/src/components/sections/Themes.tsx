@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { themes } from "@/lib/content";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
@@ -8,6 +9,7 @@ import { MovingBorderButton } from "@/components/ui/moving-border-button";
 
 
 export function Themes() {
+  const navigate = useNavigate();
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
@@ -34,7 +36,11 @@ export function Themes() {
         {themes.map((t, i) => (
           <Reveal key={t.key} delay={(i % 3) * 0.08} className="w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]">
             <FocusCard index={i} hovered={hovered} setHovered={setHovered}>
-              <article className="group">
+              <Link
+                to={`/creer?theme=${t.key}`}
+                aria-label={`Créer un portrait ${t.title}`}
+                className="group block"
+              >
                 <PosterFrame
                   accent={t.accentVar}
                   label={t.subtitle}
@@ -52,7 +58,7 @@ export function Themes() {
                     style={{ background: t.accentVar }}
                   />
                 </div>
-              </article>
+              </Link>
             </FocusCard>
           </Reveal>
         ))}
@@ -64,7 +70,7 @@ export function Themes() {
           <p className="text-ink-soft">
             Un thème vous parle&nbsp;? Lancez le vôtre en quelques secondes.
           </p>
-          <MovingBorderButton className="group">
+          <MovingBorderButton className="group" onClick={() => navigate("/creer")}>
             Créer mon portrait
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </MovingBorderButton>

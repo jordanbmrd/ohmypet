@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
-import { ok, fail } from "../../lib/http.js";
+import { ok, fail, parseJsonBody } from "../../lib/http.js";
 import { ValidationError } from "../../lib/errors.js";
 import { decodeAndValidateImage } from "../../lib/imageProcessor.js";
 import { isTheme } from "../../lib/promptBuilder.js";
@@ -21,19 +21,7 @@ export const handler = async (
   event: APIGatewayProxyEventV2,
 ): Promise<APIGatewayProxyResultV2> => {
   try {
-    // API Gateway (HTTP API) may base64-encode the body; decode it first so
-    // JSON.parse never receives base64 garbage (which would surface as a
-    // generic 500 "Unexpected error" instead of a clear validation error).
-    const rawBody = event.isBase64Encoded
-      ? Buffer.from(event.body ?? "", "base64").toString("utf8")
-      : event.body ?? "{}";
-
-    let json: unknown;
-    try {
-      json = JSON.parse(rawBody || "{}");
-    } catch {
-      throw new ValidationError("Request body is not valid JSON");
-    }
+    const json = parseJsonBody(event);
 
     const parsed = GenerateRequestSchema.safeParse(json);
     if (!parsed.success) {

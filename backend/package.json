@@ -4,7 +4,7 @@
   "private": true,
   "description": "OhMyPet serverless backend — AI pet poster generation",
   "scripts": {
-    "build": "rimraf dist && esbuild src/functions/generate/handler.ts src/functions/status/handler.ts src/functions/worker/handler.ts --bundle --platform=node --target=node20 --format=cjs --outdir=dist/functions --outbase=src/functions --external:@aws-sdk/*",
+    "build": "rimraf dist && esbuild src/functions/generate/handler.ts src/functions/status/handler.ts src/functions/worker/handler.ts src/functions/checkout/handler.ts src/functions/stripe-webhook/handler.ts src/functions/order/handler.ts --bundle --platform=node --target=node20 --format=cjs --outdir=dist/functions --outbase=src/functions --external:@aws-sdk/*",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "deploy": "npm run build && sam build && sam deploy"

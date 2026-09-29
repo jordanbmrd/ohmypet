@@ -1,9 +1,12 @@
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
 import { MovingBorderButton } from "@/components/ui/moving-border-button";
 import { Reveal } from "@/components/Reveal";
 
 export function CTA() {
+  const navigate = useNavigate();
+
   return (
     <section className="px-6 pb-28 lg:px-10 lg:pb-36">
       <Reveal>
@@ -27,18 +30,22 @@ export function CTA() {
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <MovingBorderButton
               className="group bg-canvas text-ink"
+              onClick={() => navigate("/creer")}
               borderClassName="bg-[radial-gradient(var(--color-accent)_35%,transparent_60%)]"
             >
               Créer mon portrait
               <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </MovingBorderButton>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-canvas/25 text-canvas hover:bg-canvas hover:text-ink"
+            <Link
+              to={{ hash: "#themes" }}
+              className={buttonVariants({
+                size: "lg",
+                variant: "outline",
+                className: "border-canvas/25 text-canvas hover:bg-canvas hover:text-ink",
+              })}
             >
               Découvrir les thèmes
-            </Button>
+            </Link>
           </div>
         </div>
       </Reveal>

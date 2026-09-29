@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus, ArrowRight } from "lucide-react";
 import { faqs } from "@/lib/content";
 import { Reveal } from "@/components/Reveal";
@@ -6,6 +7,7 @@ import { MovingBorderButton } from "@/components/ui/moving-border-button";
 import { cn } from "@/lib/utils";
 
 export function FAQ() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -56,7 +58,7 @@ export function FAQ() {
           <p className="text-ink-soft">
             Tout est clair&nbsp;? Il ne reste plus qu'à essayer, sans carte bancaire.
           </p>
-          <MovingBorderButton className="group">
+          <MovingBorderButton className="group" onClick={() => navigate("/creer")}>
             Créer mon portrait
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </MovingBorderButton>

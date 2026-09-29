@@ -1,4 +1,4 @@
-name: Deploy landing page to GitHub Pages
+name: Deploy website to GitHub Pages
 
 on:
   push:
@@ -41,6 +41,10 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          # Backend URL (SAM output ApiBaseUrl), set as a repository variable.
+          # Left empty, the site is built in demo mode (no generation, no payment).
+          VITE_API_BASE_URL: ${{ vars.API_BASE_URL }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

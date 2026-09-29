@@ -1,5 +1,5 @@
-import type { APIGatewayProxyResultV2 } from "aws-lambda";
-import { AppError } from "./errors.js";
+import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
+import { AppError, ValidationError } from "./errors.js";
 
 const baseHeaders = {
   "content-type": "application/json",
@@ -28,4 +28,23 @@ export function fail(error: unknown): APIGatewayProxyResultV2 {
     headers: baseHeaders,
     body: JSON.stringify({ error: "INTERNAL_ERROR", message: detail }),
   };
+}
+
+/**
+ * Returns the request body as a string. API Gateway (HTTP API) may
+ * base64-encode it; decoding first keeps JSON.parse and signature checks
+ * working on the bytes the client actually sent.
+ */
+export function rawBody(event: APIGatewayProxyEventV2): string {
+  return event.isBase64Encoded
+    ? Buffer.from(event.body ?? "", "base64").toString("utf8")
+    : event.body ?? "";
+}
+
+export function parseJsonBody(event: APIGatewayProxyEventV2): unknown {
+  try {
+    return JSON.parse(rawBody(event) || "{}");
+  } catch {
+    throw new ValidationError("Request body is not valid JSON");
+  }
 }

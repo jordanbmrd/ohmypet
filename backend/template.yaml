@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: OhMyPet backend — AI pet poster generation (OpenAI gpt-image-1 + S3 + DynamoDB)
+Description: OhMyPet backend — AI pet poster generation (OpenAI gpt-image-1 + S3 + DynamoDB) and orders (Stripe Checkout)
 
 Parameters:
   Stage:
@@ -12,6 +12,10 @@ Parameters:
     Default: high
     AllowedValues: [low, medium, high]
     Description: gpt-image-1 quality — "high" looks best, "medium" is ~2x faster/cheaper
+  SiteUrl:
+    Type: String
+    Default: https://jordanbmrd.github.io/ohmypet
+    Description: Public URL of the website (no trailing slash) — Stripe redirects back here after payment
 
 Globals:
   Function:
@@ -23,6 +27,7 @@ Globals:
       Variables:
         STAGE: !Ref Stage
         JOBS_TABLE: !Ref JobsTable
+        ORDERS_TABLE: !Ref OrdersTable
         IMAGES_BUCKET: !Ref ImagesBucket
         PRESIGN_EXPIRY_SECONDS: "604800" # 7 days (SigV4 presigned-URL maximum)
     Handler: handler.handler
@@ -107,6 +112,75 @@ Resources:
             Path: /status/{jobId}
             Method: GET
 
+  # Prices the cart server-side, stores a pending order, returns a Stripe Checkout URL.
+  CheckoutFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/functions/checkout
+      Environment:
+        Variables:
+          STRIPE_SECRET_ARN: !Ref StripeSecret
+          SITE_URL: !Ref SiteUrl
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref JobsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OrdersTable
+        - Statement:
+            - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Ref StripeSecret
+      Events:
+        Checkout:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /checkout
+            Method: POST
+
+  # Called by Stripe: flips orders to paid/expired. Register the endpoint in the
+  # Stripe dashboard (see StripeWebhookUrl output) for the checkout.session.* events.
+  StripeWebhookFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/functions/stripe-webhook
+      Environment:
+        Variables:
+          STRIPE_SECRET_ARN: !Ref StripeSecret
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref OrdersTable
+        - Statement:
+            - Effect: Allow
+              Action: secretsmanager:GetSecretValue
+              Resource: !Ref StripeSecret
+      Events:
+        Webhook:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /stripe/webhook
+            Method: POST
+
+  OrderFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: dist/functions/order
+      MemorySize: 128
+      Timeout: 10
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref OrdersTable
+        - S3ReadPolicy:
+            BucketName: !Ref ImagesBucket
+      Events:
+        Order:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /orders/{orderId}
+            Method: GET
+
   ##########################################################################
   # Secrets — OpenAI API key
   ##########################################################################
@@ -119,6 +193,15 @@ Resources:
     Properties:
       Name: !Sub ohmypet/openai-api-key-${Stage}
       Description: OpenAI API key (raw string) for gpt-image-1 image generation
+
+  # Created empty on purpose, like the OpenAI one. After the first deploy:
+  #   aws secretsmanager put-secret-value --secret-id ohmypet/stripe-<stage> \
+  #     --secret-string '{"secretKey":"sk_...","webhookSecret":"whsec_..."}'
+  StripeSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub ohmypet/stripe-${Stage}
+      Description: 'Stripe keys as JSON: {"secretKey":"sk_...","webhookSecret":"whsec_..."}'
 
   ##########################################################################
   # DynamoDB — jobs
@@ -137,6 +220,23 @@ Resources:
       TimeToLiveSpecification:
         AttributeName: ttl
         Enabled: true
+
+  ##########################################################################
+  # DynamoDB — orders (no TTL: they are the business record)
+  ##########################################################################
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ohmypet-orders-${Stage}
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: orderId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: orderId
+          KeyType: HASH
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
 
   ##########################################################################
   # S3 — generated images
@@ -171,6 +271,13 @@ Outputs:
     Value: !Ref ImagesBucket
   JobsTableName:
     Value: !Ref JobsTable
+  OrdersTableName:
+    Value: !Ref OrdersTable
+  StripeWebhookUrl:
+    Description: Register this endpoint in Stripe (events checkout.session.completed, checkout.session.async_payment_succeeded, checkout.session.expired)
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/stripe/webhook
+  StripeSecretId:
+    Value: !Sub ohmypet/stripe-${Stage}
   OpenAISecretId:
     Description: Set the key here after deploy — `aws secretsmanager put-secret-value --secret-id <this> --secret-string 'sk-...'`
     Value: !Sub ohmypet/openai-api-key-${Stage}
